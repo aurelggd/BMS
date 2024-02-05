@@ -14,6 +14,7 @@ class BankAccount{
 public:
     void createAccount();
     void showAccount() const;
+    int retAccountNumber() const;
     // void modify();
     // void deposit(int);
     // void withdraw(int);
@@ -51,12 +52,22 @@ void BankAccount::showAccount() const{
     cout << "                                                                \t Balance amount : " << moneyDeposit << endl;
 }
 
+int BankAccount::retAccountNumber() const {
+    return accountNumber;
+}
+
+
+void writeAccount();
+void displayDetails(int);
+void deleteAccount();
+    
+
 int main(){
 
     char ch;
     int num;
 
-
+    do{
     system("cls");
 
     cout << "###################################################################################################################################################################" << endl;
@@ -84,7 +95,7 @@ int main(){
 
     switch(ch){
         case '1':
-            
+            writeAccount();
             break;
         case '2':
             // deposit();
@@ -103,18 +114,18 @@ int main(){
             system("cls");
             cout << "                                                                 \tEnter the account number : ";
             cin >> num;
+            displayDetails(num);
             break;
         case '5':
             // showAll();
             system("cls");
-            cout << "                                                                 \tEnter the account number : ";
-            cin >> num;
             break;
         case '6':
             // closeAccount();
             system("cls");
             cout << "                                                                 \tEnter the account number : ";
             cin >> num;
+            deleteAccount();
             break;
         case '7':
             // modifyAccount();
@@ -129,13 +140,69 @@ int main(){
         default:
             cout << "Invalid choice !" << endl;
     }
+    cin.ignore();
+    cin.get();
 
     cout << "\t -----------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl;
-
-    // BankAccount zen;
-    // zen.createAccount();
-    // zen.showAccount();
+    }while(ch != '8');
 
     return 0;
+}
+
+void writeAccount(){
+    BankAccount bankAccount;
+    ofstream outFile;
+    outFile.open("account.dat", ios::binary | ios::app);
+    bankAccount.createAccount();
+    outFile.write(reinterpret_cast<char *> (&bankAccount), sizeof(BankAccount));
+    outFile.close();
+}
+
+void deleteAccount(){
+    BankAccount bankAccount;
+    ifstream inFile;
+    ofstream outFile;
+    int accountNumber;
+    cout << "Enter the account number you want to delete : ";
+    cin >> accountNumber;
+    inFile.open("account.dat", ios::binary);
+    if(!inFile){
+        cout << "File could not be opened. Press any key to continue...";
+        return;
+    }
+    outFile.open("Temp.dat", ios::binary);
+    inFile.seekg(0, ios::beg);
+    while(inFile.read(reinterpret_cast<char *> (&bankAccount), sizeof(BankAccount))){
+        if(bankAccount.retAccountNumber() != accountNumber){
+            outFile.write(reinterpret_cast<char *> (&bankAccount), sizeof(BankAccount));
+        }
+    }
+    inFile.close();
+    outFile.close();
+    remove("account.dat");
+    rename("Temp.dat", "account.dat");
+    cout << "Account deleted successfully !" << endl;
+}
+
+void displayDetails(int n){
+    BankAccount bankAccount;
+    bool flag = false;
+    ifstream inFile;
+    inFile.open("account.dat", ios::binary);
+    if(!inFile){
+        cout << "File could not be opened. Press any key to continue...";
+        return;
+    }
+    cout << "Balance Details" << endl;
+    while(inFile.read(reinterpret_cast<char *> (&bankAccount), sizeof(BankAccount))){
+        if(bankAccount.retAccountNumber() == n){
+            bankAccount.showAccount();
+            flag = true;
+        }
+    }
+    inFile.close();
+    if(flag == false){
+        cout << "Account number does not exist !" << endl;
+    }
 }
