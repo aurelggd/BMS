@@ -78,14 +78,64 @@ int main(){
     cout << "                                                                \t 6. Close an account                                                                " << endl;
     cout << "                                                                \t 7. Modify an account                                                                " << endl;
     cout << "                                                                \t 8. Exit                                                                " << endl;
+    cout << "                                                                \t Enter your choice beetween 1-8 : " << endl;
+    cin >> ch;
     cout << endl;
+
+    switch(ch){
+        case '1':
+            
+            break;
+        case '2':
+            // deposit();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '3':
+            // withdraw();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '4':
+            // report();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '5':
+            // showAll();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '6':
+            // closeAccount();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '7':
+            // modifyAccount();
+            system("cls");
+            cout << "                                                                 \tEnter the account number : ";
+            cin >> num;
+            break;
+        case '8':
+            // exit();
+            cout << "                                                                 \tThank you for using the Bank Management System !";
+            break;
+        default:
+            cout << "Invalid choice !" << endl;
+    }
 
     cout << "\t -----------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl;
 
-    BankAccount zen;
-    zen.createAccount();
-    zen.showAccount();
+    // BankAccount zen;
+    // zen.createAccount();
+    // zen.showAccount();
 
     return 0;
 }
